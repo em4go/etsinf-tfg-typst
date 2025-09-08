@@ -25,7 +25,7 @@
 ) = {
   // 1. Configuración de idioma, geometría, tipografía, colores, etc.
   set text(lang: lang, font: "Palatino", size: 11pt)
-  set page(paper: "a4", margin: (left: 2cm, right: 2cm, top: 2cm, bottom: 2cm))
+  set page(paper: "a4", margin: (left: 3cm, right: 3cm, top: 2.35cm, bottom: 2.35cm))
   set par(justify: true, spacing: 1em)
 
   set heading(numbering: "1.")
