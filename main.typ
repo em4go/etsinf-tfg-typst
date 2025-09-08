@@ -1,15 +1,15 @@
 #import "lib.typ": tfgetsinf_template
 
 #show: tfgetsinf_template.with(
-  lang: "es",
+  lang: "en",
   list_of_tables: false,
   list_of_figures: false,
   list_of_quadres: false,
   list_of_algorithms: false,
   title: "Título del Trabajo",
-  author: "Autor del Trabajo",
-  tutor: "Tutor del Trabajo",
-  tutor2: "Co-Tutor del Trabajo",
+  author: "Ernesto Martínez Gómez",
+  tutor: "Laura Sebastiá Tarín",
+  tutor2: "César Castillo Espinosa",
   course: "2025/2026",
   keywords_cat: "palabras clave en catalán",
   keywords_es: "palabras clave en español",
