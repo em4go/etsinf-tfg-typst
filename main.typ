@@ -1,7 +1,7 @@
-#import "lib.typ": tfgetsinf_template
+#import "lib.typ": tfgetsinf_template, create_abstract
 
 #show: tfgetsinf_template.with(
-  lang: "en",
+  lang: "es",
   list_of_tables: false,
   list_of_figures: false,
   list_of_quadres: false,
@@ -16,6 +16,23 @@
   keywords_en: "keywords in english",
 )
 
-= hola
+#pagebreak()
 
-De qué forma se puede ver el idioma en el que hablamos?
+#create_abstract(
+  lang: "es",
+  body: lorem(100),
+  keywords: ("Typst", "LaTeX", "Overleaf", "Markdown", "Word", "Google Docs", "Document Preparation", "Academic Writing", "Technical Writing", "Formatting", "Typesetting")
+)
+
+
+#create_abstract(
+  lang: "ca",
+  body: lorem(100),
+  keywords: ("Typst", "LaTeX", "Overleaf", "Markdown", "Word", "Google Docs", "Document Preparation", "Academic Writing", "Technical Writing", "Formatting", "Typesetting")
+)
+
+#create_abstract(
+  lang: "en",
+  body: lorem(100),
+  keywords: ("Typst", "LaTeX", "Overleaf", "Markdown", "Word", "Google Docs", "Document Preparation", "Academic Writing", "Technical Writing", "Formatting", "Typesetting")
+)

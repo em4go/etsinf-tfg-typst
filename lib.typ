@@ -12,6 +12,50 @@
 #let grisclar = rgb(128, 128, 128) // Original: gray{0.5} (gris claro)
 #let grisfosc = rgb(64, 64, 64)    // Original: gray{0.25} (gris oscuro)
 
+// Function to create abstract
+#let create_abstract = (
+  lang: "es",
+  body: "",
+  keywords: ()
+) => {
+  let strings = (
+    "ca": (
+      "abstractname": "Resum",
+      "keywordsname": "Paraules clau"
+    ),
+    "es": (
+      "abstractname": "Resumen",
+      "keywordsname": "Palabras clave"
+    ),
+    "en": (
+      "abstractname": "Abstract",
+      "keywordsname": "Key words"
+    )
+  )
+  
+  let abstract_str = strings.at(lang).at("abstractname")
+  let keywords_str = strings.at(lang).at("keywordsname")
+  
+  let keywords_text = keywords.join(", ")
+  
+  [
+    #align(right)[
+      #text(size: 2em, font: "Droid Sans")[#abstract_str]
+    ]
+
+    #par(
+      first-line-indent: 2em,
+      justify: true,
+      body
+    )
+
+    *#keywords_str:* #keywords_text
+
+    #v(-0.2cm)
+    #line(length: 100%)
+  ]
+}
+
 #let tfgetsinf_template(
   lang: "es", // or "ca" or "en"
   list_of_tables: false,
@@ -29,7 +73,7 @@
   body
 ) = {
   // 1. Configuración de idioma, geometría, tipografía, colores, etc.
-  set text(lang: lang, font: "Palatino")
+  set text(lang: lang)
   set page(paper: "a4", margin: (left: x_margin, right: x_margin, top: y_margin, bottom: y_margin))
 
 
@@ -42,6 +86,7 @@
       "tutorname": "Tutor",
       "coursename": "Curs",
       "keywordsname": "Paraules clau",
+      "abstractname": "Resum",
       "algorithm_name": "Algorisme",
       "list_algorithm_name": "Índex d'algorismes",
       "quadre_name": "Quadre",
@@ -59,6 +104,7 @@
       "tutorname": "Tutor",
       "coursename": "Curso",
       "keywordsname": "Palabras clave",
+      "abstractname": "Resumen",
       "algorithm_name": "Algoritmo",
       "list_algorithm_name": "Índice de algoritmos",
       "quadre_name": "Cuadro",
@@ -76,6 +122,7 @@
       "tutorname": "Tutor",
       "coursename": "Course",
       "keywordsname": "Key words",
+      "abstractname": "Abstract",
       "algorithm_name": "Algorithm",
       "list_algorithm_name": "List of algorithms",
       "quadre_name": "Quadre",
@@ -138,8 +185,9 @@ align(center)[
 #text(size: huge, weight: "bold")[#title]
 
 #v(-0.5cm)
+
 #text(size: large, weight: "bold")[
-  #tfg_full_str
+  #smallcaps(tfg_full_str)
 ]
 
 #v(0.2cm)
