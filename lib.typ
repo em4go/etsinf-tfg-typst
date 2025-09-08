@@ -74,7 +74,7 @@
 ) = {
   // 1. Configuración de idioma, geometría, tipografía, colores, etc.
   set text(lang: lang)
-  set page(paper: "a4", margin: (left: x_margin, right: x_margin, top: y_margin, bottom: y_margin))
+  set page(paper: "a4", margin: (left: x_margin, right: x_margin, top: y_margin, bottom: y_margin), numbering: "1.")
 
 
   // 2. Definición de cadenas de texto multi-idioma
