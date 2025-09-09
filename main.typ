@@ -49,16 +49,17 @@
   line(length: 100%)
   v(1em)
   context{
-    let outlines = query(outline)
+    let outlines = query(<index-text>)
     for item in outlines {
-      if item.title == none {
+      if item == none {
         continue
       }
       let loc  = item.location()
       let page = counter(page).at(loc).at(0)
-      link(loc, [*#item.title*
-      #h(1fr)
-      *#page*
+      link(loc, [
+        *#item*
+        #h(1fr)
+        *#page*
 
       ])
     }
@@ -73,19 +74,24 @@
 
 #pagebreak()
 
-
 #outline(title: [
-  Índice de figuras
+  #align(right, text(size: 24pt, weight: "bold")[Índice de figuras <index-text>])
+  #line(length: 100%)
+  #v(1em)
   ],
   target: figure.where(kind: image))
   #pagebreak()
 #outline(title: [
-  Índice de Cosas
+  #align(right, text(size: 24pt, weight: "bold")[Índice de cosas <index-text>])
+  #line(length: 100%)
+  #v(1em)
   ],
   target: figure.where(kind: image))
 #pagebreak()
 #outline(title: [
-  Índice de Pedos
+  #align(right, text(size: 24pt, weight: "bold")[Índice de pedos <index-text>])
+  #line(length: 100%)
+  #v(1em)
   ],
   target: figure.where(kind: image))
 #pagebreak()
