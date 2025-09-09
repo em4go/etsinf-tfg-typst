@@ -57,7 +57,7 @@
       let loc  = item.location()
       let page = counter(page).at(loc).at(0)
       link(loc, [
-        *#item*
+        *#item.text*
         #h(1fr)
         *#page*
 
