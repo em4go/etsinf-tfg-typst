@@ -1,6 +1,6 @@
+#import "template.typ": *
+
 #let in-outline = state("in-outline", false)
-#let large = 14.4pt
-#let huge = 24.88pt
 #set heading(numbering: "1.1.")
 
 #show outline: it => align(center, it)

@@ -2,7 +2,6 @@
 
 #let title = "Título del Trabajo"
 
-#set page(paper: "a4", margin: (left: x_margin, right: x_margin, top: y_margin, bottom: y_margin))
 
 
 #place(

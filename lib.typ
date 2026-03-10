@@ -1,3 +1,5 @@
+#import "utils.typ": *
+
 #let x_margin = 3cm
 #let y_margin = 2.35cm
 
@@ -12,48 +14,12 @@
 #let grisclar = rgb(128, 128, 128) // Original: gray{0.5} (gris claro)
 #let grisfosc = rgb(64, 64, 64)    // Original: gray{0.25} (gris oscuro)
 
-// Function to create abstract
-#let create_abstract = (
-  lang: "es",
-  body: "",
-  keywords: ()
-) => {
-  let strings = (
-    "ca": (
-      "abstractname": "Resum",
-      "keywordsname": "Paraules clau"
-    ),
-    "es": (
-      "abstractname": "Resumen",
-      "keywordsname": "Palabras clave"
-    ),
-    "en": (
-      "abstractname": "Abstract",
-      "keywordsname": "Key words"
-    )
-  )
-  
-  let abstract_str = strings.at(lang).at("abstractname")
-  let keywords_str = strings.at(lang).at("keywordsname")
-  
-  let keywords_text = keywords.join(", ")
-  
-  [
-    #align(right)[
-      #text(size: 2em, font: "Droid Sans")[#abstract_str]
-    ]
-
-    #par(
-      first-line-indent: 2em,
-      justify: true,
-      body
-    )
-
-    *#keywords_str:* #keywords_text
-
-    #v(-0.2cm)
-    #line(length: 100%)
-  ]
+// check whether this is an empty page
+#let is-page-empty() = {
+  let page-num = here().page()
+  query(selector.or(<empty-page-start>, <empty-page-end>)).chunks(2).any(((start, end)) => {
+    start.location().page() < page-num and page-num < end.location().page()
+  })
 }
 
 #let tfgetsinf_template(
@@ -72,9 +38,68 @@
   keywords_en: "keywords in english",
   body
 ) = {
+  // make pagebreaks detectable
+  show pagebreak: it => {
+    [#metadata(none) <empty-page-start>]
+    it
+    [#metadata(none) <empty-page-end>]
+  }
+
+
+
   // 1. Configuración de idioma, geometría, tipografía, colores, etc.
   set text(lang: lang)
-  set page(paper: "a4", margin: (left: x_margin, right: x_margin, top: y_margin, bottom: y_margin), numbering: "1.")
+  set page(paper: "a4", margin: (left: x_margin, right: x_margin, top: y_margin, bottom: y_margin),
+  numbering: "i",
+  footer: context if not is-page-empty() {
+    align(center, counter(page).display(page.numbering))
+    },
+  header: context{
+    is-page-empty()
+  }
+  )
+  // skip header and footer on empty pages
+  show selector.or(
+    pagebreak.where(to: "odd"),
+    pagebreak.where(to: "even"),
+  ): set page(header: none, footer: none)
+
+  // Estilos de los headings (chapters)
+  set heading(numbering: "1.1.")
+
+  show heading.where(level: 1): it => {
+    context {
+      if not it.outlined {
+        // Renderiza el título normalmente en el índice
+        it
+      } else {
+        // Calcula el número del capítulo usando el contador
+        let chapter-num = counter(heading).at(it.location()).at(0)
+        
+        // Aplica el estilo deseado a los títulos de nivel 1 en el documento
+        set heading(numbering: none)
+        
+        // Contenedor para las reglas y el espaciado
+        box(
+          // Estructura vertical con espacios y reglas
+          stack(dir: ttb, spacing: 12pt,
+            v(12pt),
+            box(width: 100%, line(length: 100%, stroke: 1pt)),
+            v(1.2pt),
+            box(width: 100%, line(length: 100%, stroke: 0.4pt)),
+            v(12pt),
+            // Etiqueta del capítulo en mayúsculas y tamaño grande
+            align(right, text(size: large)[#upper("capítulo " + str(chapter-num))]),
+            // Título del capítulo
+            align(right, text(size: huge)[#it.body]),
+            v(10pt),
+            box(width: 100%, line(length: 100%, stroke: 1pt)),
+            v(12pt),
+          ),
+        )
+      }
+    }
+  }
 
 
   // 2. Definición de cadenas de texto multi-idioma
@@ -211,8 +236,100 @@ align(center)[
 ]
 ]
 
+
 pagebreak()
 
+pagebreak()
+
+create_abstract(
+  lang: "es",
+  body: lorem(100),
+  keywords: ("Typst", "LaTeX", "Overleaf", "Markdown", "Word", "Google Docs", "Document Preparation", "Academic Writing", "Technical Writing", "Formatting", "Typesetting")
+)
+
+
+create_abstract(
+  lang: "ca",
+  body: lorem(100),
+  keywords: ("Typst", "LaTeX", "Overleaf", "Markdown", "Word", "Google Docs", "Document Preparation", "Academic Writing", "Technical Writing", "Formatting", "Typesetting")
+)
+
+create_abstract(
+  lang: "en",
+  body: lorem(100),
+  keywords: ("Typst", "LaTeX", "Overleaf", "Markdown", "Word", "Google Docs", "Document Preparation", "Academic Writing", "Technical Writing", "Formatting", "Typesetting")
+)
+
+pagebreak()
+
+
+let create_index = (
+  lang: "es",
+) => {
+  align(right, text(size: 3em, weight: "bold")[Índice])
+  v(-0.7cm)
+  line(length: 100%)
+  v(1em)
+  context{
+    let loc = here()
+    let index_page = counter(page).at(loc).at(0)
+    link(loc, [
+      *Índice*
+      #h(1fr)
+      *#index_page*
+
+    ])
+    let outlines = query(<index-text>)
+    for item in outlines {
+      if item == none {
+        continue
+      }
+      let loc  = item.location()
+      let page = counter(page).at(loc).at(0)
+      link(loc, [
+        *#item.text*
+        #h(1fr)
+        *#page*
+
+      ])
+    }
+  }
+  line(length: 100%)
+  outline(title: none, depth: 3, target: heading)
+}
+
+create_index(lang: "es")
+
+pagebreak()
+
+pagebreak()
+
+outline(title: [
+  #align(right, text(size: 24pt, weight: "bold")[Índice de figuras <index-text>])
+  #line(length: 100%)
+  #v(1em)
+  ],
+  target: figure.where(kind: image))
+  pagebreak()
+outline(title: [
+  #align(right, text(size: 24pt, weight: "bold")[Índice de cosas <index-text>])
+  #line(length: 100%)
+  #v(1em)
+  ],
+  target: figure.where(kind: image))
+pagebreak()
+outline(title: [
+  #align(right, text(size: 24pt, weight: "bold")[Índice de pedos <index-text>])
+  #line(length: 100%)
+  #v(1em)
+  ],
+  target: figure.where(kind: image))
+pagebreak()
+
+  set page(
+    numbering: "1",
+  )
+counter(page).update(2)
 
   body // Contenido principal del documento
 }
