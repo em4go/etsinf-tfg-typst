@@ -126,6 +126,7 @@
     if it.outlined {
       pagebreak(to: "odd", weak: true)
     }
+    set page(header: none)
     context {
       if not it.outlined {
         // Renderiza el título normalmente en el índice
