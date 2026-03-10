@@ -166,6 +166,14 @@
     }
   }
 
+  show heading.where(level: 2): it => {
+    set text(size: large, weight: "bold", font: "Palatino")
+    it
+    v(-0.8em)
+    line(length: 100%, stroke: 1.5pt)
+    v(0.5em)
+  }
+
 
   // 2. Definición de cadenas de texto multi-idioma
   let strings = (
