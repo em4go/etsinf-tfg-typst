@@ -1,7 +1,7 @@
 #import "lib.typ": tfgetsinf_template
 
 #show: tfgetsinf_template.with(
-  lang: "es",
+  lang: "en",
   list_of_tables: false,
   list_of_figures: false,
   list_of_quadres: false,
@@ -11,9 +11,12 @@
   tutor: "Juan Miguel Alberola Oltra",
   tutor2: "Victor Sánchez Anguix",
   course: "2025/2026",
-  keywords_cat: "palabras clave en catalán",
-  keywords_es: "palabras clave en español",
-  keywords_en: "keywords in english",
+  abstract_cat: lorem(100),
+  abstract_es: lorem(100),
+  abstract_en: lorem(100),
+  keywords_cat: "Typst, LaTeX, Overleaf, Markdown, Word, Google Docs, Document Preparation, Academic Writing, Technical Writing, Formatting, Typesetting",
+  keywords_es: "Typst, LaTeX, Overleaf, Markdown, Word, Google Docs, Document Preparation, Academic Writing, Technical Writing, Formatting, Typesetting",
+  keywords_en: "Typst, LaTeX, Overleaf, Markdown, Word, Google Docs, Document Preparation, Academic Writing, Technical Writing, Formatting, Typesetting",
 )
 
 #counter(page).update(1)

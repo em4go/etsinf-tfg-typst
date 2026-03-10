@@ -32,7 +32,13 @@
   let abstract_str = strings.at(lang).at("abstractname")
   let keywords_str = strings.at(lang).at("keywordsname")
   
-  let keywords_text = keywords.join(", ")
+  let keywords_list = if type(keywords) == str {
+    keywords.split(",").map(s => s.trim())
+  } else {
+    keywords
+  }
+  
+  let keywords_text = keywords_list.join(", ")
   
   [
     #align(right)[

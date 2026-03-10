@@ -33,6 +33,9 @@
   tutor: "Tutor del Trabajo",
   tutor2: "Co-Tutor del Trabajo",
   course: "Curso Académico",
+  abstract_cat: "",
+  abstract_es: "",
+  abstract_en: "",
   keywords_cat: "palabras clave en catalán",
   keywords_es: "palabras clave en español",
   keywords_en: "keywords in english",
@@ -241,24 +244,24 @@ pagebreak()
 
 pagebreak()
 
-create_abstract(
-  lang: "es",
-  body: lorem(100),
-  keywords: ("Typst", "LaTeX", "Overleaf", "Markdown", "Word", "Google Docs", "Document Preparation", "Academic Writing", "Technical Writing", "Formatting", "Typesetting")
-)
+  create_abstract(
+    lang: "es",
+    body: abstract_es,
+    keywords: keywords_es
+  )
 
 
-create_abstract(
-  lang: "ca",
-  body: lorem(100),
-  keywords: ("Typst", "LaTeX", "Overleaf", "Markdown", "Word", "Google Docs", "Document Preparation", "Academic Writing", "Technical Writing", "Formatting", "Typesetting")
-)
+  create_abstract(
+    lang: "ca",
+    body: abstract_cat,
+    keywords: keywords_cat
+  )
 
-create_abstract(
-  lang: "en",
-  body: lorem(100),
-  keywords: ("Typst", "LaTeX", "Overleaf", "Markdown", "Word", "Google Docs", "Document Preparation", "Academic Writing", "Technical Writing", "Formatting", "Typesetting")
-)
+  create_abstract(
+    lang: "en",
+    body: abstract_en,
+    keywords: keywords_en
+  )
 
 pagebreak()
 
