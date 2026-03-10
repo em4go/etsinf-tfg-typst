@@ -51,7 +51,8 @@
 
 
   // 1. Configuración de idioma, geometría, tipografía, colores, etc.
-  set text(lang: lang)
+  set text(lang: lang, font: "Palatino")
+  set par(justify: true, spacing: 1em)
   set page(paper: "a4", margin: (left: x_margin, right: x_margin, top: y_margin, bottom: y_margin),
   numbering: "i",
   footer: none,
