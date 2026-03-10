@@ -55,23 +55,45 @@
   set par(justify: true, spacing: 1em)
   set page(paper: "a4", margin: (left: x_margin, right: x_margin, top: y_margin, bottom: y_margin),
   numbering: "i",
-  footer: none,
+  footer: context {
+    let page_num = here().page()
+    if is-page-empty() or page_num <= 2 {
+      return none
+    }
+
+    // No mostrar header en páginas de índices
+    let is_index_page = query(outline).any(it => it.location().page() == page_num)
+    
+    // Verificar si estamos en la página donde comienza el capítulo
+    let chapter_on_this_page = query(heading.where(level: 1)).filter(h => h.location().page() == page_num)
+    
+    if is_index_page or chapter_on_this_page.len() > 0 {
+      // Mostrar número de página en el footer (estilo 'plain')
+      return align(center, text(font: "Palatino", size: 10pt, strong(counter(page).display())))
+    }
+    return none
+  },
   header: context {
     let page_num = here().page()
     if is-page-empty() or page_num <= 2 {
       return none
     }
+
+    // No mostrar header en páginas de índices
+    let is_index_page = query(outline).any(it => it.location().page() == page_num)
+    
+    // Verificar si estamos en la página donde comienza el capítulo
+    let chapter_on_this_page = query(heading.where(level: 1)).filter(h => h.location().page() == page_num)
+    
+    if is_index_page or chapter_on_this_page.len() > 0 {
+      return none
+    }
+
     let is_odd = calc.odd(page_num)
     
     // Buscar el capítulo actual (heading nivel 1)
     let chapters = query(heading.where(level: 1).before(here()))
     
-    // Verificar si estamos en la página donde comienza el capítulo
-    let chapter_on_this_page = query(heading.where(level: 1)).filter(h => h.location().page() == page_num)
-    if chapter_on_this_page.len() > 0 {
-      return none
-    }
-
     let chapter_text = if chapters.len() > 0 {
       let last_chapter = chapters.last()
       last_chapter.body
@@ -367,7 +389,7 @@ pagebreak()
   create_index(lang: lang)
 
   if list_of_figures {
-    pagebreak(to: "odd", weak: true)
+    pagebreak(weak: true)
     outline(
       title: [
         #align(right, text(size: 24pt, weight: "bold")[#list_figures_name_str])
@@ -379,7 +401,7 @@ pagebreak()
   }
 
   if list_of_tables {
-    pagebreak(to: "odd", weak: true)
+    pagebreak(weak: true)
     outline(
       title: [
         #align(right, text(size: 24pt, weight: "bold")[#list_tables_name_str])
@@ -391,7 +413,7 @@ pagebreak()
   }
 
   if list_of_quadres {
-    pagebreak(to: "odd", weak: true)
+    pagebreak(weak: true)
     outline(
       title: [
         #align(right, text(size: 24pt, weight: "bold")[#list_quadre_name_str])
@@ -403,7 +425,7 @@ pagebreak()
   }
 
   if list_of_algorithms {
-    pagebreak(to: "odd", weak: true)
+    pagebreak(weak: true)
     outline(
       title: [
         #align(right, text(size: 24pt, weight: "bold")[#list_algorithm_name_str])
