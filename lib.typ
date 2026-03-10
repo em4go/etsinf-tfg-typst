@@ -304,10 +304,13 @@ pagebreak()
 
 pagebreak()
 
+  let list_figures_name_str = if lang == "ca" { "Índex de figures" } else if lang == "en" { "List of figures" } else { "Índice de figuras" }
+  let list_tables_name_str = if lang == "ca" { "Índex de taules" } else if lang == "en" { "List of tables" } else { "Índice de tablas" }
+
   if list_of_figures {
     outline(
       title: [
-        #align(right, text(size: 24pt, weight: "bold")[Índice de figuras])
+        #align(right, text(size: 24pt, weight: "bold")[#list_figures_name_str])
         #line(length: 100%)
         #v(1em)
       ],
@@ -319,7 +322,7 @@ pagebreak()
   if list_of_tables {
     outline(
       title: [
-        #align(right, text(size: 24pt, weight: "bold")[Índice de tablas])
+        #align(right, text(size: 24pt, weight: "bold")[#list_tables_name_str])
         #line(length: 100%)
         #v(1em)
       ],
