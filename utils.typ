@@ -59,3 +59,13 @@
     #line(length: 100%)
   ]
 }
+
+// Function to create a quadre (table-like figure)
+#let quadre(caption: none, body, supplement: [Cuadro]) = {
+  figure(
+    kind: "quadre",
+    supplement: supplement,
+    caption: caption,
+    body
+  )
+}
