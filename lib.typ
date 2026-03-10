@@ -64,6 +64,13 @@
     
     // Buscar el capítulo actual (heading nivel 1)
     let chapters = query(heading.where(level: 1).before(here()))
+    
+    // Verificar si estamos en la página donde comienza el capítulo
+    let chapter_on_this_page = query(heading.where(level: 1)).filter(h => h.location().page() == page_num)
+    if chapter_on_this_page.len() > 0 {
+      return none
+    }
+
     let chapter_text = if chapters.len() > 0 {
       let last_chapter = chapters.last()
       last_chapter.body
@@ -126,7 +133,6 @@
     if it.outlined {
       pagebreak(to: "odd", weak: true)
     }
-    set page(header: none)
     context {
       if not it.outlined {
         // Renderiza el título normalmente en el índice
