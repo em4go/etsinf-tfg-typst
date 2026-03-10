@@ -190,6 +190,10 @@
       "list_algorithm_name": "Índex d'algorismes",
       "quadre_name": "Quadre",
       "list_quadre_name": "Índex de quadres",
+      "figures_name": "Figura",
+      "list_figures_name": "Índex de figures",
+      "tables_name": "Taula",
+      "list_tables_name": "Índex de taules",
       "appendicesname": "Apèndixs",
       "university1": "Escola Tècnica Superior d'Enginyeria Informàtica",
       "university2": "Universitat Politècnica de València",
@@ -208,6 +212,10 @@
       "list_algorithm_name": "Índice de algoritmos",
       "quadre_name": "Cuadro",
       "list_quadre_name": "Índice de cuadros",
+      "figures_name": "Figura",
+      "list_figures_name": "Índice de figuras",
+      "tables_name": "Tabla",
+      "list_tables_name": "Índice de tablas",
       "appendicesname": "Apéndices",
       "university1": "Escuela Técnica Superior de Ingeniería Informática",
       "university2": "Universitat Politècnica de València",
@@ -226,6 +234,10 @@
       "list_algorithm_name": "List of algorithms",
       "quadre_name": "Quadre",
       "list_quadre_name": "List of quadres",
+      "figures_name": "Figure",
+      "list_figures_name": "List of figures",
+      "tables_name": "Table",
+      "list_tables_name": "List of tables",
       "appendicesname": "Appendices",
       "university1": "School of Computer Engineering",
       "university2": "Polytechnic University of Valencia",
@@ -244,6 +256,10 @@
   let list_algorithm_name_str = strings.at(lang).at("list_algorithm_name")
   let quadre_name_str = strings.at(lang).at("quadre_name")
   let list_quadre_name_str = strings.at(lang).at("list_quadre_name")
+  let figures_name_str = strings.at(lang).at("figures_name")
+  let list_figures_name_str = strings.at(lang).at("list_figures_name")
+  let tables_name_str = strings.at(lang).at("tables_name")
+  let list_tables_name_str = strings.at(lang).at("list_tables_name")
   let appendicesname_str = strings.at(lang).at("appendicesname")
   let university1_str = strings.at(lang).at("university1")
   let university2_str = strings.at(lang).at("university2")
