@@ -19,8 +19,6 @@
   keywords_en: "Typst, LaTeX, Overleaf, Markdown, Word, Google Docs, Document Preparation, Academic Writing, Technical Writing, Formatting, Typesetting",
 )
 
-#counter(page).update(1)
-
 = Hola
 
 == Subtitle

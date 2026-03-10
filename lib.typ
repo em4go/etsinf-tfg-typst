@@ -54,11 +54,63 @@
   set text(lang: lang)
   set page(paper: "a4", margin: (left: x_margin, right: x_margin, top: y_margin, bottom: y_margin),
   numbering: "i",
-  footer: context if not is-page-empty() {
-    align(center, counter(page).display(page.numbering))
-    },
-  header: context{
-    is-page-empty()
+  footer: none,
+  header: context {
+    let page_num = here().page()
+    if is-page-empty() or page_num <= 2 {
+      return none
+    }
+    let is_odd = calc.odd(page_num)
+    
+    // Buscar el capítulo actual (heading nivel 1)
+    let chapters = query(heading.where(level: 1).before(here()))
+    let chapter_text = if chapters.len() > 0 {
+      let last_chapter = chapters.last()
+      last_chapter.body
+    } else {
+      ""
+    }
+
+    // Buscar la sección actual (heading nivel 2)
+    let sections = query(heading.where(level: 2).before(here()))
+    let section_text = if sections.len() > 0 {
+      let last_section = sections.last()
+      // Verificar si la sección pertenece al capítulo actual
+      if chapters.len() > 0 and last_section.location().page() >= chapters.last().location().page() {
+        if last_section.numbering != none {
+          let nums = counter(heading).at(last_section.location())
+          str(nums.at(0)) + "." + str(nums.at(1)) + " " + last_section.body
+        } else {
+          last_section.body
+        }
+      } else {
+        ""
+      }
+    } else {
+      ""
+    }
+
+    let header_content = if is_odd {
+      // Páginas impares: sección izquierda (\lhead), número derecha (\rhead)
+      grid(
+        columns: (1fr, 1fr),
+        align: (left, right),
+        text(font: "Palatino", size: 10pt, emph(section_text)),
+        text(font: "Palatino", size: 10pt, strong(counter(page).display()))
+      )
+    } else {
+      // Páginas pares: número izquierda (\lhead), capítulo derecha (\rhead)
+      grid(
+        columns: (1fr, 1fr),
+        align: (left, right),
+        text(font: "Palatino", size: 10pt, strong(counter(page).display())),
+        text(font: "Palatino", size: 10pt, emph(chapter_text))
+      )
+    }
+
+    header_content
+    v(5pt)
+    line(length: 100%, stroke: 1.2pt)
   }
   )
   // skip header and footer on empty pages
@@ -71,6 +123,9 @@
   set heading(numbering: "1.1.")
 
   show heading.where(level: 1): it => {
+    if it.outlined {
+      pagebreak(to: "odd", weak: true)
+    }
     context {
       if not it.outlined {
         // Renderiza el título normalmente en el índice
@@ -279,14 +334,8 @@ pagebreak()
 
   create_index(lang: lang)
 
-pagebreak()
-
-pagebreak()
-
-  let list_figures_name_str = if lang == "ca" { "Índex de figures" } else if lang == "en" { "List of figures" } else { "Índice de figuras" }
-  let list_tables_name_str = if lang == "ca" { "Índex de taules" } else if lang == "en" { "List of tables" } else { "Índice de tablas" }
-
   if list_of_figures {
+    pagebreak(to: "odd", weak: true)
     outline(
       title: [
         #align(right, text(size: 24pt, weight: "bold")[#list_figures_name_str])
@@ -295,10 +344,10 @@ pagebreak()
       ],
       target: figure.where(kind: image)
     )
-    pagebreak()
   }
 
   if list_of_tables {
+    pagebreak(to: "odd", weak: true)
     outline(
       title: [
         #align(right, text(size: 24pt, weight: "bold")[#list_tables_name_str])
@@ -307,10 +356,10 @@ pagebreak()
       ],
       target: figure.where(kind: table)
     )
-    pagebreak()
   }
 
   if list_of_quadres {
+    pagebreak(to: "odd", weak: true)
     outline(
       title: [
         #align(right, text(size: 24pt, weight: "bold")[#list_quadre_name_str])
@@ -319,10 +368,10 @@ pagebreak()
       ],
       target: figure.where(kind: "quadre")
     )
-    pagebreak()
   }
 
   if list_of_algorithms {
+    pagebreak(to: "odd", weak: true)
     outline(
       title: [
         #align(right, text(size: 24pt, weight: "bold")[#list_algorithm_name_str])
@@ -331,13 +380,13 @@ pagebreak()
       ],
       target: figure.where(kind: "algorithm")
     )
-    pagebreak()
   }
 
+  pagebreak(to: "odd", weak: true)
   set page(
     numbering: "1",
   )
-counter(page).update(2)
+  counter(page).update(1)
 
   body // Contenido principal del documento
 }

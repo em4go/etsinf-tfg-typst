@@ -44,7 +44,7 @@
   
   [
     #align(right)[
-      #text(size: 2em, font: "Droid Sans")[#abstract_str]
+      #text(size: 2em)[#abstract_str]
     ]
 
     #par(
