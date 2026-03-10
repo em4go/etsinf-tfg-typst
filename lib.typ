@@ -304,27 +304,53 @@ pagebreak()
 
 pagebreak()
 
-outline(title: [
-  #align(right, text(size: 24pt, weight: "bold")[Índice de figuras <index-text>])
-  #line(length: 100%)
-  #v(1em)
-  ],
-  target: figure.where(kind: image))
-  pagebreak()
-outline(title: [
-  #align(right, text(size: 24pt, weight: "bold")[Índice de cosas <index-text>])
-  #line(length: 100%)
-  #v(1em)
-  ],
-  target: figure.where(kind: image))
-pagebreak()
-outline(title: [
-  #align(right, text(size: 24pt, weight: "bold")[Índice de pedos <index-text>])
-  #line(length: 100%)
-  #v(1em)
-  ],
-  target: figure.where(kind: image))
-pagebreak()
+  if list_of_figures {
+    outline(
+      title: [
+        #align(right, text(size: 24pt, weight: "bold")[Índice de figuras])
+        #line(length: 100%)
+        #v(1em)
+      ],
+      target: figure.where(kind: image)
+    )
+    pagebreak()
+  }
+
+  if list_of_tables {
+    outline(
+      title: [
+        #align(right, text(size: 24pt, weight: "bold")[Índice de tablas])
+        #line(length: 100%)
+        #v(1em)
+      ],
+      target: figure.where(kind: table)
+    )
+    pagebreak()
+  }
+
+  if list_of_quadres {
+    outline(
+      title: [
+        #align(right, text(size: 24pt, weight: "bold")[#list_quadre_name_str])
+        #line(length: 100%)
+        #v(1em)
+      ],
+      target: figure.where(kind: "quadre")
+    )
+    pagebreak()
+  }
+
+  if list_of_algorithms {
+    outline(
+      title: [
+        #align(right, text(size: 24pt, weight: "bold")[#list_algorithm_name_str])
+        #line(length: 100%)
+        #v(1em)
+      ],
+      target: figure.where(kind: "algorithm")
+    )
+    pagebreak()
+  }
 
   set page(
     numbering: "1",
