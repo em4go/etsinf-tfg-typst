@@ -34,8 +34,10 @@
   
   let keywords_list = if type(keywords) == str {
     keywords.split(",").map(s => s.trim())
-  } else {
+  } else if type(keywords) == array {
     keywords
+  } else {
+    ()
   }
   
   let keywords_text = keywords_list.join(", ")
