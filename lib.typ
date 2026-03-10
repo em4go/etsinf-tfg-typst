@@ -263,42 +263,18 @@ create_abstract(
 pagebreak()
 
 
-let create_index = (
-  lang: "es",
-) => {
-  align(right, text(size: 3em, weight: "bold")[Índice])
-  v(-0.7cm)
-  line(length: 100%)
-  v(1em)
-  context{
-    let loc = here()
-    let index_page = counter(page).at(loc).at(0)
-    link(loc, [
-      *Índice*
-      #h(1fr)
-      *#index_page*
-
-    ])
-    let outlines = query(<index-text>)
-    for item in outlines {
-      if item == none {
-        continue
-      }
-      let loc  = item.location()
-      let page = counter(page).at(loc).at(0)
-      link(loc, [
-        *#item.text*
-        #h(1fr)
-        *#page*
-
-      ])
-    }
+  let create_index = (
+    lang: "es",
+  ) => {
+    let index_title = if lang == "ca" { "Índex" } else if lang == "en" { "Contents" } else { "Índice" }
+    align(right, text(size: huge, weight: "bold")[#index_title])
+    v(-0.7cm)
+    line(length: 100%)
+    v(1em)
+    outline(title: none, depth: 3, target: heading)
   }
-  line(length: 100%)
-  outline(title: none, depth: 3, target: heading)
-}
 
-create_index(lang: "es")
+  create_index(lang: lang)
 
 pagebreak()
 
