@@ -33,27 +33,29 @@
   #image("logo-etsinf.svg"),
 ]
 
-#quadre(
-  caption: [Example of a quadre],
-)[
-  #block(
-    stroke: 0.5pt,
-    inset: 10pt,
-    [This is the content of a quadre, which is a custom environment in the ETSINF template.]
-  )
-]
+  #quadre(
+    lang: "en",
+    caption: [Example of a quadre],
+  )[
+    #block(
+      stroke: 0.5pt,
+      inset: 10pt,
+      [This is the content of a quadre, which is a custom environment in the ETSINF template.]
+    )
+  ]
 
-#lorem(50)
+  #lorem(50)
 
-#quadre(
-  caption: [Another quadre with a table inside],
-)[
-  #table(
-    columns: (1fr, 1fr),
-    [Feature], [Description],
-    [Typst], [Modern typesetting],
-    [LaTeX], [Classic typesetting],
-  )
-]
+  #quadre(
+    lang: "en",
+    caption: [Another quadre with a table inside],
+  )[
+    #table(
+      columns: (1fr, 1fr),
+      [Feature], [Description],
+      [Typst], [Modern typesetting],
+      [LaTeX], [Classic typesetting],
+    )
+  ]
 
 = Other title

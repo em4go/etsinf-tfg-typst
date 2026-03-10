@@ -405,4 +405,8 @@ pagebreak()
   counter(page).update(1)
 
   body // Contenido principal del documento
+
+  // Documentación de bibliografía:
+  // Para incluir la bibliografía, el usuario debe llamar a #bibliography("references.bib") 
+  // (o el nombre del archivo correspondiente) al final de su documento principal.
 }

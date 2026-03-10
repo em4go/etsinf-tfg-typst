@@ -61,7 +61,13 @@
 }
 
 // Function to create a quadre (table-like figure)
-#let quadre(caption: none, body, supplement: [Cuadro]) = {
+#let quadre(caption: none, body, lang: "es") = {
+  let strings = (
+    "ca": "Quadre",
+    "es": "Cuadro",
+    "en": "Quadre"
+  )
+  let supplement = strings.at(lang, default: "Cuadro")
   figure(
     kind: "quadre",
     supplement: supplement,
