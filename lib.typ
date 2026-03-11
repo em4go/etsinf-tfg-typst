@@ -421,14 +421,8 @@ pagebreak()
     heading(level: 1, numbering: none, index_title)
     show outline.entry: it => context {
       let is-top-level = it.level == 1
-      let is-frontmatter-entry = it.element.numbering == none
-      let is-first-body-entry = (
-        is-top-level and
-        not is-frontmatter-entry and
-        query(heading.where(level: 1).before(it.element.location()))
-          .filter(h => h.outlined and h.numbering != none)
-          .len() == 0
-      )
+      let page-counter = counter(page).at(it.element.location()).at(0)
+      let is-first-body-entry = is-top-level and page-counter == 1
 
       let entry = link(
         it.element.location(),
@@ -440,10 +434,10 @@ pagebreak()
       )
 
       if is-first-body-entry {
-        [
-          #v(0.75em)
-          #line(length: 100%)
-          #v(0.75em)
+        block(width: 100%)[
+          #block(width: 100%, above: 0.75em, below: 0.75em)[
+            #line(length: 100%)
+          ]
           #entry
         ]
       } else {
