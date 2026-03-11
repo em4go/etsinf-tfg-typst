@@ -48,7 +48,7 @@
   
   [
     #align(right)[
-      #text(size: 2em)[#abstract_str]
+      #text(size: 2em, weight: "bold", font: ("LMSans10", "Helvetica", "Arial"))[#abstract_str]
     ]
 
     #par(
