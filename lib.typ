@@ -184,7 +184,7 @@
     context {
       if is_frontmatter_heading {
         align(right, text(size: huge, weight: "bold", font: sans-font)[#it.body])
-        v(-0.7cm)
+        v(0.35em)
         line(length: 100%)
         v(1em)
       } else {
@@ -419,6 +419,37 @@ pagebreak()
   ) => {
     let index_title = if lang == "ca" { "Índex" } else if lang == "en" { "Contents" } else { "Índice" }
     heading(level: 1, numbering: none, index_title)
+    show outline.entry: it => context {
+      let is-top-level = it.level == 1
+      let is-frontmatter-entry = it.element.numbering == none
+      let is-first-body-entry = (
+        is-top-level and
+        not is-frontmatter-entry and
+        query(heading.where(level: 1).before(it.element.location()))
+          .filter(h => h.outlined and h.numbering != none)
+          .len() == 0
+      )
+
+      let entry = link(
+        it.element.location(),
+        if is-top-level {
+          text(weight: "bold")[#it.indented(it.prefix(), it.inner())]
+        } else {
+          it.indented(it.prefix(), it.inner())
+        },
+      )
+
+      if is-first-body-entry {
+        [
+          #v(0.75em)
+          #line(length: 100%)
+          #v(0.75em)
+          #entry
+        ]
+      } else {
+        entry
+      }
+    }
     outline(title: none, depth: 3, target: heading)
   }
 
