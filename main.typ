@@ -1,12 +1,12 @@
 #import "lib.typ": tfgetsinf_template
-#import "utils.typ": quadre
+#import "utils.typ": quadre, algorithm
 
 #show: tfgetsinf_template.with(
   lang: "es",
   list_of_tables: true,
   list_of_figures: true,
   list_of_quadres: true,
-  list_of_algorithms: false,
+  list_of_algorithms: true,
   title: "Introducción a las Redes Neuronales Artificiales: Fundamentos y Aplicaciones",
   author: "Ernesto Martínez Gómez",
   tutor: "Juan Miguel Alberola Oltra",
@@ -126,10 +126,15 @@ Una red neuronal multicapa (Multi-Layer Perceptron) consiste en múltiples capas
 
 El algoritmo de retropropagación (_backpropagation_) es el método fundamental para entrenar redes neuronales multicapa. Se basa en la regla de la cadena del cálculo diferencial para calcular gradientes de manera eficiente.
 
-El proceso consiste en dos fases:
-
-1. *Propagación hacia adelante*: Se calculan las salidas de la red capa por capa
-2. *Propagación hacia atrás*: Se calculan los gradientes del error respecto a cada peso
+#algorithm(
+  lang: "es",
+  caption: [Algoritmo de Retropropagación (simplificado)],
+)[
+  1. *Propagación hacia adelante*: Se calculan las salidas de la red capa por capa
+  2. *Cálculo del error*: Se compara la salida obtenida con la esperada
+  3. *Propagación hacia atrás*: Se calculan los gradientes del error respecto a cada peso
+  4. *Actualización de pesos*: Se ajustan los pesos usando gradiente descendente
+]
 
 La actualización de pesos sigue la regla del gradiente descendiente:
 
@@ -144,6 +149,14 @@ donde $eta$ es la tasa de aprendizaje y $L$ es la función de pérdida.
 == Redes Convolucionales (CNN)
 
 Las redes neuronales convolucionales (CNN) están especialmente diseñadas para procesar datos con estructura de cuadrícula, como imágenes.
+
+=== Operación de Convolución
+
+$
+  (I * K)(i, j) = sum_m sum_n I(i+m, j+n) dot K(m, n)
+$
+
+donde $I$ es la imagen de entrada y $K$ es el kernel o filtro.
 
 === Componentes Principales
 

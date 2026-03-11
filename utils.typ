@@ -37,10 +37,14 @@
   } else if type(keywords) == array {
     keywords
   } else {
-    ()
+    (keywords,)
   }
   
-  let keywords_text = keywords_list.join(", ")
+  let keywords_text = if type(keywords_list) == array {
+    keywords_list.join(", ")
+  } else {
+    str(keywords_list)
+  }
   
   [
     #align(right)[
@@ -74,4 +78,30 @@
     caption: caption,
     body
   )
+}
+
+// Function to create an algorithm (table-like figure with specific layout)
+#let algorithm(caption: none, body, lang: "es") = {
+  let strings = (
+    "ca": "Algorisme",
+    "es": "Algoritmo",
+    "en": "Algorithm"
+  )
+  let supplement = strings.at(lang, default: "Algoritmo")
+  
+  // LaTeX format: ruled (\hrulefill\par#1#2#3\vspace{-.5\baselineskip}\hrulefill)
+  // We can simulate this with a block and lines
+  block(width: 100%, breakable: true)[
+    #line(length: 100%, stroke: 0.5pt)
+    #v(-0.5em)
+    #figure(
+      kind: "algorithm",
+      supplement: supplement,
+      caption: caption,
+      // The body will be between lines
+      align(left, body)
+    )
+    #v(-0.5em)
+    #line(length: 100%, stroke: 0.5pt)
+  ]
 }
