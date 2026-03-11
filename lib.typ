@@ -9,9 +9,9 @@
 // Definición de colores
 // Definiciones de colores equivalentes a los de tfgetsinf.cls
 #let dkgreen = rgb(0, 153, 0)      // Original: rgb{0,0.6,0} (verde oscuro)
-#let gray = rgb(128, 128, 128)     // Original: rgb{0.5,0.5,0.5} (gris)
+#let gray = rgb(127, 127, 127)     // Original: rgb{0.5,0.5,0.5} (gris)
 #let mauve = rgb(148, 0, 209)      // Original: rgb{0.58,0,0.82} (malva)
-#let grisclar = rgb(128, 128, 128) // Original: gray{0.5} (gris claro)
+#let grisclar = rgb(127, 127, 127) // Original: gray{0.5} (gris claro)
 #let grisfosc = rgb(64, 64, 64)    // Original: gray{0.25} (gris oscuro)
 
 // check whether this is an empty page
@@ -51,7 +51,12 @@
 
 
   // 1. Configuración de idioma, geometría, tipografía, colores, etc.
-  set text(lang: lang, font: "Palatino")
+  set text(lang: lang, font: ("TeX Gyre Pagella", "Palatino")) // Typst supports CM for math well, Palatino for text
+  set math.equation(numbering: "(1)")
+  show math.equation: set text(font: "New Computer Modern Math")
+  
+  let sans-font = ("LMSans10", "Helvetica", "Arial")
+  
   set par(justify: true, spacing: 1em)
   set page(paper: "a4", margin: (left: x_margin, right: x_margin, top: y_margin, bottom: y_margin),
   numbering: "i",
@@ -69,7 +74,7 @@
     
     if is_index_page or chapter_on_this_page.len() > 0 {
       // Mostrar número de página en el footer (estilo 'plain')
-      return align(center, text(font: "Palatino", size: 10pt, strong(counter(page).display())))
+      return align(center, text(font: "Palatino", size: 10pt, weight: "bold", counter(page).display()))
     }
     return none
   },
@@ -122,19 +127,22 @@
 
     let header_content = if is_odd {
       // Páginas impares: sección izquierda (\lhead), número derecha (\rhead)
+      // En LaTeX: \lhead[\bfseries\thepage]{\sffamily\rightmark} \rhead[\sffamily\leftmark]{\bfseries\thepage}
+      // Para impares: \lhead = \rightmark (sección), \rhead = \thepage
       grid(
         columns: (1fr, 1fr),
         align: (left, right),
-        text(font: "Palatino", size: 10pt, emph(section_text)),
-        text(font: "Palatino", size: 10pt, strong(counter(page).display()))
+        text(font: "Palatino", size: 10pt, section_text),
+        text(font: "Palatino", size: 10pt, weight: "bold", counter(page).display())
       )
     } else {
       // Páginas pares: número izquierda (\lhead), capítulo derecha (\rhead)
+      // Para pares: \lhead = \thepage, \rhead = \leftmark (capítulo)
       grid(
         columns: (1fr, 1fr),
         align: (left, right),
-        text(font: "Palatino", size: 10pt, strong(counter(page).display())),
-        text(font: "Palatino", size: 10pt, emph(chapter_text))
+        text(font: "Palatino", size: 10pt, weight: "bold", counter(page).display()),
+        text(font: "Palatino", size: 10pt, chapter_text)
       )
     }
 
@@ -143,6 +151,21 @@
     line(length: 100%, stroke: 1.2pt)
   }
   )
+
+  // Configuración de captions (equivalente a \RequirePackage[justification=centerlast,small,bf,labelsep=colon]{caption})
+  show figure.caption: it => {
+    set align(center)
+    set text(size: 9pt) // small
+    block(inset: (x: 2em))[
+      *#it.supplement #it.counter.display():* #it.body
+    ]
+  }
+
+  // Estilo específico para algoritmos (ruled)
+  show figure.where(kind: "algorithm"): it => {
+    set figure.caption(position: top)
+    it
+  }
   // skip header and footer on empty pages
   show selector.or(
     pagebreak.where(to: "odd"),
@@ -153,13 +176,17 @@
   set heading(numbering: "1.1.")
 
   show heading.where(level: 1): it => {
-    if it.outlined {
+    let is_frontmatter_heading = it.numbering == none
+
+    if not is_frontmatter_heading and it.outlined {
       pagebreak(to: "odd", weak: true)
     }
     context {
-      if not it.outlined {
-        // Renderiza el título normalmente en el índice
-        it
+      if is_frontmatter_heading {
+        align(right, text(size: huge, weight: "bold", font: sans-font)[#it.body])
+        v(-0.7cm)
+        line(length: 100%)
+        v(1em)
       } else {
         // Calcula el número del capítulo usando el contador
         let chapter-num = counter(heading).at(it.location()).at(0)
@@ -167,30 +194,42 @@
         // Aplica el estilo deseado a los títulos de nivel 1 en el documento
         set heading(numbering: none)
         
-        // Contenedor para las reglas y el espaciado
-        box(
-          // Estructura vertical con espacios y reglas
-          stack(dir: ttb, spacing: 12pt,
-            v(12pt),
-            box(width: 100%, line(length: 100%, stroke: 1pt)),
-            v(1.2pt),
-            box(width: 100%, line(length: 100%, stroke: 0.4pt)),
-            v(12pt),
-            // Etiqueta del capítulo en mayúsculas y tamaño grande
-            align(right, text(size: large)[#upper("capítulo " + str(chapter-num))]),
-            // Título del capítulo
-            align(right, text(size: huge)[#it.body]),
-            v(10pt),
-            box(width: 100%, line(length: 100%, stroke: 1pt)),
-            v(12pt),
-          ),
+        let label_str = if lang == "ca" { "capítol" } else if lang == "en" { "chapter" } else { "capítulo" }
+
+        // LaTeX style for chapter:
+        // \titleformat{\chapter}[display]
+        // {\normalfont\Large\filleft\sffamily\bfseries}  % FORMAT
+        // {\titlerule[1pt]                                  
+        //  \vspace{1pt}
+        //  \titlerule
+        //  \vspace{1pc}
+        //  \LARGE\MakeUppercase{\chaptertitlename} \thechapter} % LABEL
+        // {0pc}                                                 % SEP
+        // {\Huge}                                               % BEFORE CODE (abans del tÃ­tol)
+        // [\vspace{5pt}{\titlerule[1pt]}]                       % AFTER CODE (desprÃ©s del tÃ­tol)
+
+        set align(right)
+        set text(font: sans-font, weight: "bold")
+
+        v(12pt)
+        stack(
+          spacing: 1pt,
+          line(length: 100%, stroke: 1pt),
+          line(length: 100%, stroke: 0.5pt)
         )
+        v(12pt) // 1pc approx 12pt
+        text(size: large)[#upper(label_str + " " + str(chapter-num))]
+        v(0pt)
+        text(size: huge)[#it.body]
+        v(5pt)
+        line(length: 100%, stroke: 1pt)
+        v(24pt)
       }
     }
   }
 
   show heading.where(level: 2): it => {
-    set text(size: large, weight: "bold", font: "Palatino")
+    set text(size: large, weight: "bold", font: sans-font)
     it
     v(-0.8em)
     line(length: 100%, stroke: 1.5pt)
@@ -201,7 +240,7 @@
   // 2. Definición de cadenas de texto multi-idioma
   let strings = (
     "ca": (
-      "titulacioname": "Grau en Ciència de Dades",
+      "titulacioname": "Grau en Enginyeria Informàtica",
       "tfgname": "Treball fi de grau",
       "authorname": "Autor",
       "tutorname": "Tutor",
@@ -220,10 +259,10 @@
       "university1": "Escola Tècnica Superior d'Enginyeria Informàtica",
       "university2": "Universitat Politècnica de València",
       "tfg_full": "Treball de Fi de Grau",
-      "degree_full": "Grau en Ciència de Dades"
+      "degree_full": "Grau en Enginyeria Informàtica"
     ),
     "es": (
-      "titulacioname": "Grado en Ciencia de Datos",
+      "titulacioname": "Grado en Ingeniería Informática",
       "tfgname": "Trabajo fin de grado",
       "authorname": "Autor",
       "tutorname": "Tutor",
@@ -242,10 +281,10 @@
       "university1": "Escuela Técnica Superior de Ingeniería Informática",
       "university2": "Universitat Politècnica de València",
       "tfg_full": "Trabajo de Fin de Grado",
-      "degree_full": "Grado en Ciencia de Datos"
+      "degree_full": "Grado en Ingeniería Informática"
     ),
     "en": (
-      "titulacioname": "Degree in Data Science",
+      "titulacioname": "Degree in Computer Engineering",
       "tfgname": "Degree final work",
       "authorname": "Author",
       "tutorname": "Tutor",
@@ -264,7 +303,7 @@
       "university1": "School of Computer Engineering",
       "university2": "Polytechnic University of Valencia",
       "tfg_full": "Final Degree Project",
-      "degree_full": "Degree in Data Science"
+      "degree_full": "Degree in Computer Engineering"
     )
   )
 
@@ -379,10 +418,7 @@ pagebreak()
     lang: "es",
   ) => {
     let index_title = if lang == "ca" { "Índex" } else if lang == "en" { "Contents" } else { "Índice" }
-    align(right, text(size: huge, weight: "bold")[#index_title])
-    v(-0.7cm)
-    line(length: 100%)
-    v(1em)
+    heading(level: 1, numbering: none, index_title)
     outline(title: none, depth: 3, target: heading)
   }
 
@@ -390,48 +426,36 @@ pagebreak()
 
   if list_of_figures {
     pagebreak(weak: true)
+    heading(level: 1, numbering: none, list_figures_name_str)
     outline(
-      title: [
-        #align(right, text(size: 24pt, weight: "bold")[#list_figures_name_str])
-        #line(length: 100%)
-        #v(1em)
-      ],
+      title: none,
       target: figure.where(kind: image)
     )
   }
 
   if list_of_tables {
     pagebreak(weak: true)
+    heading(level: 1, numbering: none, list_tables_name_str)
     outline(
-      title: [
-        #align(right, text(size: 24pt, weight: "bold")[#list_tables_name_str])
-        #line(length: 100%)
-        #v(1em)
-      ],
+      title: none,
       target: figure.where(kind: table)
     )
   }
 
   if list_of_quadres {
     pagebreak(weak: true)
+    heading(level: 1, numbering: none, list_quadre_name_str)
     outline(
-      title: [
-        #align(right, text(size: 24pt, weight: "bold")[#list_quadre_name_str])
-        #line(length: 100%)
-        #v(1em)
-      ],
+      title: none,
       target: figure.where(kind: "quadre")
     )
   }
 
   if list_of_algorithms {
     pagebreak(weak: true)
+    heading(level: 1, numbering: none, list_algorithm_name_str)
     outline(
-      title: [
-        #align(right, text(size: 24pt, weight: "bold")[#list_algorithm_name_str])
-        #line(length: 100%)
-        #v(1em)
-      ],
+      title: none,
       target: figure.where(kind: "algorithm")
     )
   }
