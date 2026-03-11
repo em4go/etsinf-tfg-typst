@@ -260,7 +260,7 @@
       "university1": "Escola Tècnica Superior d'Enginyeria Informàtica",
       "university2": "Universitat Politècnica de València",
       "tfg_full": "Treball de Fi de Grau",
-      "degree_full": "Grau en Enginyeria Informàtica"
+      "degree_full": "Grau en Ciència de Dades"
     ),
     "es": (
       "titulacioname": "Grado en Ciencia de Datos",
@@ -282,7 +282,7 @@
       "university1": "Escuela Técnica Superior de Ingeniería Informática",
       "university2": "Universitat Politècnica de València",
       "tfg_full": "Trabajo de Fin de Grado",
-      "degree_full": "Grado en Ingeniería Informática"
+      "degree_full": "Grado en Ciencia de Datos"
     ),
     "en": (
       "titulacioname": "Degree in Data Science",
@@ -304,7 +304,7 @@
       "university1": "School of Computer Engineering",
       "university2": "Polytechnic University of Valencia",
       "tfg_full": "Final Degree Project",
-      "degree_full": "Degree in Computer Engineering"
+      "degree_full": "Degree in Data Science"
     )
   )
 
