@@ -241,7 +241,7 @@
   // 2. Definición de cadenas de texto multi-idioma
   let strings = (
     "ca": (
-      "titulacioname": "Grau en Enginyeria Informàtica",
+      "titulacioname": "Grau en Ciència de Dades",
       "tfgname": "Treball fi de grau",
       "authorname": "Autor",
       "tutorname": "Tutor",
@@ -263,7 +263,7 @@
       "degree_full": "Grau en Enginyeria Informàtica"
     ),
     "es": (
-      "titulacioname": "Grado en Ingeniería Informática",
+      "titulacioname": "Grado en Ciencia de Datos",
       "tfgname": "Trabajo fin de grado",
       "authorname": "Autor",
       "tutorname": "Tutor",
@@ -285,7 +285,7 @@
       "degree_full": "Grado en Ingeniería Informática"
     ),
     "en": (
-      "titulacioname": "Degree in Computer Engineering",
+      "titulacioname": "Degree in Data Science",
       "tfgname": "Degree final work",
       "authorname": "Author",
       "tutorname": "Tutor",
@@ -454,7 +454,7 @@ pagebreak()
     heading(level: 1, numbering: none, list_figures_name_str)
     outline(
       title: none,
-      target: figure.where(kind: image)
+      target: figure.where(kind: image).or(figure.where(kind: "quadre"))
     )
   }
 
@@ -468,6 +468,9 @@ pagebreak()
   }
 
   if list_of_quadres {
+    // Mantener la posibilidad de un índice de cuadros separado si se desea,
+    // pero por defecto ahora se incluyen en figuras arriba.
+    // Si el usuario activa list_of_quadres, se mostrará un índice aparte también.
     pagebreak(weak: true)
     heading(level: 1, numbering: none, list_quadre_name_str)
     outline(

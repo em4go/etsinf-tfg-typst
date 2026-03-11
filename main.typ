@@ -6,12 +6,12 @@
   lang: "es",
   list_of_tables: true,
   list_of_figures: true,
-  list_of_quadres: true,
+  list_of_quadres: false,
   list_of_algorithms: true,
   title: "Introducción a las Redes Neuronales Artificiales: Fundamentos y Aplicaciones",
   author: "Ernesto Martínez Gómez",
-  tutor: "Juan Miguel Alberola Oltra",
-  tutor2: "Victor Sánchez Anguix",
+  tutor: "Fernando Martínez Gómez",
+  tutor2: "Imad Rifai",
   course: "2025/2026",
   abstract_es: [
     Las redes neuronales artificiales han revolucionado el campo del aprendizaje automático en las últimas décadas. Este trabajo presenta una introducción completa a los fundamentos teóricos de las redes neuronales, desde el perceptrón simple hasta arquitecturas complejas como redes convolucionales y recurrentes. Se analizan los principales algoritmos de entrenamiento, funciones de activación y técnicas de regularización. Además, se exploran aplicaciones prácticas en diversos dominios como visión por computador, procesamiento de lenguaje natural y sistemas recomendadores. El objetivo es proporcionar una base sólida para comprender el funcionamiento interno de estas herramientas omnipresentes en la inteligencia artificial moderna.
