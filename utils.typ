@@ -80,6 +80,27 @@
   )
 }
 
+// Standard table figure for TFG ETSINF template
+// Use this to create tables with consistent styling (no stroke, hlines, centered, etc.)
+#let tfgetsinf_table(
+  caption: none,
+  columns: 3,
+  ..content
+) = {
+  let gutter = (0em, ..(0.25em,) * (columns - 1))
+  figure(
+    table(
+      columns: columns,
+      column-gutter: gutter,
+      inset: (y: 0.6em),
+      stroke: none,
+      align: center + horizon,
+      ..content
+    ),
+    caption: caption
+  )
+}
+
 // Function to create an algorithm (table-like figure with specific layout)
 #let algorithm(caption: none, body, lang: "es") = {
   let strings = (

@@ -1,5 +1,6 @@
 #import "lib.typ": tfgetsinf_template
-#import "utils.typ": quadre, algorithm
+#import "utils.typ": quadre, algorithm, tfgetsinf_table
+#import table: *
 
 #show: tfgetsinf_template.with(
   lang: "es",
@@ -290,3 +291,16 @@ Como líneas de trabajo futuro, se podrían explorar:
 - Estudio de arquitecturas más recientes como Vision Transformers (ViT) y modelos de difusión
 - Análisis de las implicaciones éticas y sociales de los sistemas de inteligencia artificial basados en redes neuronales
 - Optimización de redes neuronales para dispositivos con recursos limitados (_edge computing_)
+
+#tfgetsinf_table(
+  caption: [Best obtained results for each neural family],
+  columns: 3,
+  hline(),
+  [*Family*], [*Binary*], [*Multiclass*],
+  hline(),
+  [Feed-Forward], [0.65], [0.19],
+  [CNN], [0.57], [0.18],
+  [RNN], [*0.70*], [*0.26*],
+  [TDNN], [0.69], [*0.26*],
+  hline()
+)

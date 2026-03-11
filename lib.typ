@@ -361,7 +361,6 @@ align(center)[
 
 #text(size: huge, weight: "bold")[#title]
 
-#v(-0.5cm)
 
 #text(size: large, weight: "bold")[
   #smallcaps(tfg_full_str)
