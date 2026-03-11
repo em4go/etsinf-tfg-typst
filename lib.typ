@@ -3,8 +3,9 @@
 #let x_margin = 3cm
 #let y_margin = 2.35cm
 
-#let large = 14.4pt
-#let huge = 24.88pt
+#let h2 = 14.4pt
+#let large = 16.4pt
+#let huge = 22.88pt
 
 // Definición de colores
 // Definiciones de colores equivalentes a los de tfgetsinf.cls
@@ -229,7 +230,7 @@
   }
 
   show heading.where(level: 2): it => {
-    set text(size: large, weight: "bold", font: sans-font)
+    set text(size: h2, weight: "bold", font: sans-font)
     it
     v(-0.8em)
     line(length: 100%, stroke: 1.5pt)
