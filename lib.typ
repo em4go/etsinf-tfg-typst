@@ -435,7 +435,7 @@ pagebreak()
 
       if is-first-body-entry {
         block(width: 100%)[
-          #block(width: 100%, above: 0.75em, below: 0.75em)[
+          #block(width: 100%, above: 0.75em, below: 1.3em)[
             #line(length: 100%)
           ]
           #entry
